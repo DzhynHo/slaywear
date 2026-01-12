@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -61,5 +64,41 @@ class ProductController extends Controller
         return redirect()->route('home');
     }
 
-    
+    // -------------------------------
+    // Dodawanie produktu do koszyka
+    // -------------------------------
+    public function addToCart(Request $request, Product $product)
+    {
+        $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $user = Auth::user();
+
+        // Pobierz istniejące zamówienie w statusie pending
+        $order = Order::firstOrCreate(
+            ['user_id' => $user->id, 'status' => 'pending'],
+            ['total_price' => 0]
+        );
+
+        // Dodaj pozycję do order_items
+        $orderItem = OrderItem::updateOrCreate(
+            [
+                'order_id' => $order->id,
+                'product_id' => $product->id
+            ],
+            [
+                'quantity' => $request->quantity,
+                'price' => $product->price
+            ]
+        );
+
+        // Aktualizacja całkowitej ceny
+        $order->total_price = $order->items()->sum(function($item) {
+            return $item->price * $item->quantity;
+        });
+        $order->save();
+
+        return redirect()->route('cart')->with('success', 'Dodano do koszyka!');
+    }
 }

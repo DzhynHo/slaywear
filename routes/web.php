@@ -1,45 +1,40 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| STRONA GŁÓWNA – DLA WSZYSTKICH (KLIENT FRONTEND)
+| Web Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
+// Strona główna - lista produktów
+Route::get('/', [ProductController::class, 'index'])->name('home');
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN – ZARZĄDZANIE PRODUKTAMI
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'checkRole:Administrator'])->group(function () {
-    Route::resource('products', ProductController::class)->except(['index','show']);
+// Dashboard (np. dla admina)
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+// Trasy wymagające zalogowania
+Route::middleware('auth')->group(function () {
+
+    // Profil użytkownika
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Zamówienia
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+
+     Route::get('/cart', [OrderController::class, 'cart'])->name('cart');
+    Route::post('/cart/pay', [OrderController::class, 'pay'])->name('cart.pay');
 });
 
-/*
-|--------------------------------------------------------------------------
-| KLIENT – ZAMÓWIENIA
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'checkRole:Klient'])->group(function () {
-    Route::resource('orders', OrderController::class)->only(['index','store','show']);
-});
 
-/*
-|--------------------------------------------------------------------------
-| PRACOWNIK – OBSŁUGA ZAMÓWIEŃ
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'checkRole:Pracownik'])->group(function () {
-    Route::resource('orders', OrderController::class)->only(['update']);
-});
-
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::resource('admin/products', Admin\ProductController::class);
-});
+// Trasy autoryzacji (login, register itd.)
+require __DIR__ . '/auth.php';

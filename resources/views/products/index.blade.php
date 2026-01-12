@@ -1,28 +1,69 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Nasze produkty</h1>
+<main class="container" role="main">
 
-<div class="row">
-@foreach($products as $product)
-    <div class="col-md-4 mb-3">
-        <div class="card h-100">
-            <div class="card-body">
-                <h2 class="h5">{{ $product->name }}</h2>
-                <p>{{ $product->description }}</p>
-                <p><strong>{{ $product->price }} zł</strong></p>
+    <header class="mb-4">
+        <h1>Nasze produkty</h1>
+        <p>Przegląd dostępnych produktów w sklepie Slaywear.</p>
+    </header>
 
-                <form method="POST" action="/orders">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <label for="qty-{{ $product->id }}" class="form-label">Ilość</label>
-                    <input id="qty-{{ $product->id }}" type="number" name="quantity" min="1" class="form-control" required>
+    <section class="row" aria-label="Lista produktów">
+        @foreach($products as $product)
+            <article class="col-md-4 mb-4">
+                <div class="card h-100" role="article" aria-labelledby="product-title-{{ $product->id }}">
+                    <div class="card-body d-flex flex-column">
 
-                    <button class="btn btn-primary mt-2">Dodaj do koszyka</button>
-                </form>
-            </div>
-        </div>
-    </div>
-@endforeach
-</div>
+                        <h2 id="product-title-{{ $product->id }}" class="h5">
+                            {{ $product->name }}
+                        </h2>
+
+                        <p>
+                            <strong>Opis:</strong><br>
+                            {{ $product->description }}
+                        </p>
+
+                        <p>
+                            <strong>Cena:</strong>
+                            {{ $product->price }} zł
+                        </p>
+
+                        <p>
+                            <strong>Dostępność:</strong>
+                            {{ $product->stock }} szt.
+                        </p>
+
+                        <form method="POST" action="/orders" aria-label="Dodaj produkt do koszyka">
+                            @csrf
+
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                            <div class="mb-2">
+                                <label for="quantity-{{ $product->id }}" class="form-label">
+                                    Ilość
+                                </label>
+
+                                <input
+                                    id="quantity-{{ $product->id }}"
+                                    type="number"
+                                    name="quantity"
+                                    min="1"
+                                    class="form-control"
+                                    required
+                                    aria-required="true"
+                                >
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mt-auto">
+                                Dodaj do koszyka
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </article>
+        @endforeach
+    </section>
+
+</main>
 @endsection
