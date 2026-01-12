@@ -9,7 +9,9 @@ use App\Http\Controllers\OrderController;
 | STRONA GŁÓWNA – DLA WSZYSTKICH (KLIENT FRONTEND)
 |--------------------------------------------------------------------------
 */
-Route::get('/', [ProductController::class, 'index'])->name('home');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +38,8 @@ Route::middleware(['auth', 'checkRole:Klient'])->group(function () {
 */
 Route::middleware(['auth', 'checkRole:Pracownik'])->group(function () {
     Route::resource('orders', OrderController::class)->only(['update']);
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('admin/products', Admin\ProductController::class);
 });

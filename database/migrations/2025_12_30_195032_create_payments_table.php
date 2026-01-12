@@ -14,6 +14,7 @@ return new class extends Migration
        Schema::create('payments', function (Blueprint $table) {
     $table->id();
     $table->foreignId('order_id')->constrained()->onDelete('cascade');
+    $table->integer('amount');
     $table->string('method'); // card, blik, transfer
     $table->string('status'); // pending, completed
     $table->timestamps();
