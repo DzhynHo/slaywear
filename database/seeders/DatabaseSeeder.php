@@ -18,36 +18,84 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Tworzymy role
-        Role::factory()->create(['name' => 'Administrator']);
-        Role::factory()->create(['name' => 'Klient']);
-        Role::factory()->create(['name' => 'Pracownik']);
+        $adminRole = Role::factory()->create(['name' => 'Administrator']);
+        $clientRole = Role::factory()->create(['name' => 'Klient']);
+        $employeeRole = Role::factory()->create(['name' => 'Pracownik']);
 
-        // Tworzymy testowego użytkownika
+        // Tworzymy testowego administratora
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'), // hasło do logowania
-            'role_id' => 1, // np. Administrator
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
+            'role_id' => $adminRole->id,
         ]);
 
-        // Tworzymy kilku dodatkowych użytkowników
-        User::factory(5)->create();
+        // Tworzymy testowego klienta
+        $clientUser = User::factory()->create([
+            'name' => 'Client User',
+            'email' => 'client@example.com',
+            'password' => bcrypt('password'),
+            'role_id' => $clientRole->id,
+        ]);
+
+        // Tworzymy pracownika
+        User::factory()->create([
+            'name' => 'Employee User',
+            'email' => 'employee@example.com',
+            'password' => bcrypt('password'),
+            'role_id' => $employeeRole->id,
+        ]);
+
+        // Tworzymy kilka dodatkowych klientów
+        User::factory(5)->create(['role_id' => $clientRole->id]);
 
         // Tworzymy kategorie i produkty
-        Category::factory(5)->create();
-        Product::factory(20)->create();
+        $categories = Category::factory(5)->create();
+        $products = Product::factory(20)->create([
+            'category_id' => $categories->random()->id,
+        ]);
 
-        // Tworzymy zamówienia i powiązane elementy
-        Order::factory(10)->create();
-        OrderItem::factory(30)->create();
+        // Tworzymy adresy dla klientów
+        Address::factory(10)->create([
+            'user_id' => $clientUser->id,
+        ]);
 
-        // Tworzymy adresy
-        Address::factory(10)->create();
+        // Tworzymy zamówienia dla klienta
+        $orders = Order::factory(5)->create([
+            'user_id' => $clientUser->id,
+            'status' => 'pending',
+            'total_price' => 0, // będzie obliczone po dodaniu elementów
+        ]);
 
-        // Tworzymy płatności
-        Payment::factory(10)->create();
+        // Tworzymy elementy zamówień
+        foreach ($orders as $order) {
+            $items = OrderItem::factory(rand(1, 5))->create([
+                'order_id' => $order->id,
+                'product_id' => $products->random()->id,
+                'quantity' => rand(1, 3),
+                'price' => $products->random()->price,
+            ]);
 
-        // Tworzymy recenzje
-        Review::factory(15)->create();
+            // Obliczamy łączną cenę zamówienia
+            $total = $items->sum(fn($item) => $item->quantity * $item->price);
+            $order->update(['total_price' => $total]);
+        }
+
+        // Tworzymy płatności dla zamówień
+        foreach ($orders as $order) {
+            Payment::factory()->create([
+                'order_id' => $order->id,
+                'amount' => $order->total_price,
+                'status' => 'paid',
+            ]);
+        }
+
+        // Tworzymy recenzje dla produktów
+        foreach ($products as $product) {
+            Review::factory(rand(0, 3))->create([
+                'product_id' => $product->id,
+                'user_id' => $clientUser->id,
+            ]);
+        }
     }
 }

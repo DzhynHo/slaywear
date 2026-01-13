@@ -22,21 +22,18 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
-    // 🔗 RELACJE (MUSZĄ BYĆ POZA casts())
-
+    // RELACJA Z ROLĄ
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
+    // RELACJE DLA ZAMÓWIEŃ, RECENZJI, ADRESÓW
     public function orders()
     {
         return $this->hasMany(Order::class);
