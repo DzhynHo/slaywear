@@ -22,38 +22,44 @@ class DatabaseSeeder extends Seeder
         $clientRole = Role::factory()->create(['name' => 'Klient']);
         $employeeRole = Role::factory()->create(['name' => 'Pracownik']);
 
-        // Tworzymy testowego administratora
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
-            'role_id' => $adminRole->id,
-        ]);
+        // Tworzymy (jeśli nie istnieją) konta testowe: administrator, klient, pracownik
+        $adminUser = User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin User',
+                'email_verified_at' => now(),
+                'password' => bcrypt('password'),
+                'role_id' => $adminRole->id,
+            ]
+        );
 
-        // Tworzymy testowego klienta
-        $clientUser = User::factory()->create([
-            'name' => 'Client User',
-            'email' => 'client@example.com',
-            'password' => bcrypt('password'),
-            'role_id' => $clientRole->id,
-        ]);
+        $clientUser = User::firstOrCreate(
+            ['email' => 'client@example.com'],
+            [
+                'name' => 'Client User',
+                'email_verified_at' => now(),
+                'password' => bcrypt('password'),
+                'role_id' => $clientRole->id,
+            ]
+        );
 
-        // Tworzymy pracownika
-        User::factory()->create([
-            'name' => 'Employee User',
-            'email' => 'employee@example.com',
-            'password' => bcrypt('password'),
-            'role_id' => $employeeRole->id,
-        ]);
+        User::firstOrCreate(
+            ['email' => 'employee@example.com'],
+            [
+                'name' => 'Employee User',
+                'email_verified_at' => now(),
+                'password' => bcrypt('password'),
+                'role_id' => $employeeRole->id,
+            ]
+        );
 
         // Tworzymy kilka dodatkowych klientów
         User::factory(5)->create(['role_id' => $clientRole->id]);
 
-        // Tworzymy kategorie i produkty
-        $categories = Category::factory(5)->create();
-        $products = Product::factory(20)->create([
-            'category_id' => $categories->random()->id,
-        ]);
+        // Tworzymy kategorie i produkty z predefiniowanego seeda
+        $this->call(\Database\Seeders\CategorySeeder::class);
+        $this->call(ProductSeeder::class);
+        $products = Product::all();
 
         // Tworzymy adresy dla klientów
         Address::factory(10)->create([

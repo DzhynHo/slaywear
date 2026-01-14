@@ -1,3 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Simpler dark theme - clean minimal */
+@layer base {
+	html, body {
+		background-color: #000000;
+		color: #ffffff;
+		font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+	}
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Cinzel', serif;
+		color: #fff;
+	}
+}
+
+@layer components {
+	/* Ensure navbar links are visible on dark background */
+	.navbar .nav-link {
+		color: #ffffff !important;
+	}
+	.navbar .nav-link:hover, .navbar .nav-link:focus {
+		color: #ffbf47 !important;
+		text-decoration: underline;
+	}
+
+	/* Products grid moved from inline view styles: 5 columns, no gaps, full-image cards */
+	.products-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:0;padding:0;align-items:start;justify-items:stretch}
+	@media (max-width:1200px){.products-grid{grid-template-columns:repeat(4,1fr)}}
+	@media (max-width:900px){.products-grid{grid-template-columns:repeat(3,1fr)}}
+	@media (max-width:600px){.products-grid{grid-template-columns:repeat(2,1fr)}}
+
+	.product-item{padding:0;margin:0}
+	.product-card{border:2px solid #d1d5db;padding:0;box-sizing:border-box;text-align:left;background:transparent;margin:0;color:#111;overflow:visible;display:flex;flex-direction:column;border-radius:8px;transition:all 0.3s ease}
+	.product-card:hover{transform:translateY(-6px);box-shadow:0 12px 24px rgba(0,0,0,0.2);border-color:#d32f2f;z-index:1}
+	.product-card img{
+    width:100%;
+    height:auto;
+    object-fit:contain !important; /* ← КЛЮЧЕВО */
+    background:#111;
+    display:block;
+    margin:0;
+    border-radius:6px 6px 0 0;
+}
+
+	.product-info{padding:16px;text-align:center}
+
+
+	.product-card h2{margin-top:8px;margin-bottom:6px;font-size:1rem}
+	.price{font-weight:600;color:#b71c1c;margin-bottom:6px;font-size:1.2rem}
+	.products-grid .form-control{width:72px}
+	.button-buy{background:#b71c1c;color:#fff;border:none;padding:8px 12px;border-radius:4px;font-weight:600;transition:all 0.2s ease;cursor:pointer}
+	.button-buy:hover{background:#8b0000;transform:scale(1.05);box-shadow:0 4px 8px rgba(139,0,0,0.3)}
+	
+	/* Nowe style dla przycisków szczegółów */
+	.product-info .btn-info{background:#b71c1c;color:#fff;border:none;font-weight:600;transition:all 0.2s ease;width:100%;border-color:#b71c1c}
+	.product-info .btn-info:hover{background:#8b0000;border-color:#8b0000;transform:translateY(-2px);box-shadow:0 4px 8px rgba(139,0,0,0.3)}
+	.product-info .btn{width:100%;margin-bottom:6px;border-radius:4px;font-weight:600;transition:all 0.2s ease}
+
+	/* Ensure grid rows don't collapse and images won't overlap neighboring cells */
+	/* Ensure each grid cell sizes to its content and prevents overlapping: make each item a column flex container */
+	.products-grid{grid-auto-rows: auto}
+	.product-item{display:flex;flex-direction:column}
+	.product-item > .product-card{display:flex;flex-direction:column;height:100%;width:100%}
+	.product-card img{flex:0 0 auto}
+	.product-info{flex:1 0 auto}
+
+	footer.site-footer {
+		background: #000;
+		color: #fff;
+		border-top: 1px solid rgba(255,255,255,0.08);
+		padding: 2rem 0;
+		font-size: 0.9rem;
+	}
+}
+
+/* small responsive tweak */
+@media (max-width: 992px) {
+	.products-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 576px) {
+	.products-grid { grid-template-columns: 1fr; }
+	.product-card { width: 100%; }
+}
+
+/* Carousel top banner */
+.top-carousel .carousel-item img {
+    width: auto;      /* сохраняем оригинальный формат */
+    max-width: 100%;  /* чтобы не вылазило за контейнер */
+    height: auto;
+    object-fit: none; /* полностью оригинал */
+    display: block;
+}
+
+
+
+@media (max-width: 768px) {
+	.top-carousel .carousel-item img { height: 200px; }
+}
+
+/* Admin panel styles */
+.admin-panel { margin-top: 0.5rem; }
+.admin-sidebar { background: rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.04); padding:1rem; border-radius:6px; }
+.admin-sidebar h2 { font-size:1.15rem; margin-bottom:0.25rem; color: #fffbf5; }
+.admin-sidebar .muted { color: rgba(255,255,255,0.75); margin-bottom:0.6rem }
+.admin-actions ul { list-style:none; padding-left:0; margin:0; }
+.admin-actions li { margin:0.5rem 0; }
+.admin-actions a { color:#ffbf47; text-decoration:none; font-weight:600 }
+.admin-actions a:hover, .admin-actions a:focus { text-decoration:underline; color:#ffd67a }
+.admin-main { padding-left:1rem }
+
+/* Make skip link less intrusive when present: small bottom-right button */
+.skip-to-content { transition: opacity 0.18s ease }
+
+/* High contrast and font-size accessibility helpers */
+:root { --access-font-scale: 1; }
+html.font-size-large { font-size: 18px; }
+html.font-size-xlarge { font-size: 20px; }
+
+/* High contrast mode: white background, black text, strong accents */
+.high-contrast, .high-contrast body {
+	background-color: #ffffff !important;
+	color: #000000 !important;
+}
+.high-contrast a { color: #0000ff !important; text-decoration: underline !important; }
+.high-contrast .navbar { background: #000 !important; }
+.high-contrast .nav-link { color: #fff !important; }
+.high-contrast .product-card { border-color: #000 !important; background: #fff !important; }
+.high-contrast .product-card h2, .high-contrast .price, .high-contrast p { color: #000 !important; }
+.high-contrast .button-buy { background:#000 !important; color:#fff !important; }
+
+/* Accessible controls appearance */
+.a11y-toolbar {
+	position: fixed;
+	bottom: 1rem;
+	left: 50%;
+	transform: translateX(-50%);
+	background: rgba(0,0,0,0.5);
+	color: #fff;
+	padding: 4px 6px;
+	border-radius: 6px;
+	display: flex;
+	gap: 6px;
+	z-index: 1600;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+	opacity: 0.95;
+}
+.a11y-toolbar button { background: #ffbf47; border: none; color: #000; padding: 4px 6px; border-radius:3px; cursor:pointer; font-weight:600; font-size:0.85rem }
+.a11y-toolbar button:focus { outline: 3px solid #111; }
+
+/* Ensure large type doesn't break components (basic adjustments) */
+.product-card, .admin-sidebar, .admin-main { word-wrap: break-word; }
+

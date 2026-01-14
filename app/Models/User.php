@@ -33,6 +33,14 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function hasRole(string $roleName): bool
+    {
+        if (!$this->role) {
+            return false;
+        }
+        return $this->role->name === $roleName;
+    }
+
     // RELACJE DLA ZAMÓWIEŃ, RECENZJI, ADRESÓW
     public function orders()
     {

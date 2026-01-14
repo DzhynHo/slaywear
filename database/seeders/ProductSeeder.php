@@ -9,29 +9,77 @@ class ProductSeeder extends Seeder
 {
     public function run()
     {
-        Product::create([
-            'name' => 'T-shirt SLAY',
-            'description' => 'Czarny t-shirt z logo SLAYWEAR',
-            'price' => 99,
-            'stock' => 20,
-            'category_id' => 1
-        ]);
+         // Zamiast truncate()
+        // Product::truncate(); ❌
 
-        Product::create([
-            'name' => 'Bluza SLAY',
-            'description' => 'Bluza z kapturem, kolor szary',
-            'price' => 199,
-            'stock' => 15,
-            'category_id' => 1
-        ]);
+        // Użyj delete()
+        Product::query()->delete(); // ✅ bezpieczne przy FK
 
-        Product::create([
-            'name' => 'Spodnie SLAY',
-            'description' => 'Czarne spodnie dresowe',
-            'price' => 149,
-            'stock' => 10,
-            'category_id' => 1
-        ]);
+        // Upewnij się, że istnieje kategoria domyślna
+        $category = \App\Models\Category::firstOrCreate(['name' => 'Domyślna']);
+
+        $items = [
+            [
+                'name' => 'Jeansy',
+                'description' => 'Zwykłe niebieskie jeansy',
+                'brand' => 'Slaywear',
+                'photo' => '1.jpg',
+            ],
+            [
+                'name' => 'Krawat',
+                'description' => 'Czarny krawat z wzorami',
+                'brand' => 'Slaywear',
+                'photo' => '2.jpg',
+            ],
+            [
+                'name' => 'Kamizelka',
+                'description' => 'Kamizelka z motywem smoka',
+                'brand' => 'Slaywear',
+                'photo' => '3.jpg',
+            ],
+            [
+                'name' => 'Koszulka',
+                'description' => 'Czarna koszulka z królikem',
+                'brand' => 'Slaywear',
+                'photo' => '4.jpg',
+            ],
+            [
+                'name' => 'Koszulka',
+                'description' => 'Czarna koszulka z nadrukiem Sonica',
+                'brand' => 'Slaywear',
+                'photo' => '5.jpg',
+            ],
+            [
+                'name' => 'Bluza',
+                'description' => 'Bluza z motywem Roblox',
+                'brand' => 'Slaywear',
+                'photo' => '6.jpg',
+            ],
+            [
+                'name' => 'Skarpetki',
+                'description' => 'Białe skarpetki, nazwa 52',
+                'brand' => 'Slaywear',
+                'photo' => '7.jpg',
+            ],
+            [
+                'name' => 'Koszulka',
+                'description' => 'Biała koszulka z logo marki',
+                'brand' => 'Slaywear',
+                'photo' => '8.jpg',
+            ],
+        ];
+
+        foreach ($items as $data) {
+            Product::create([
+                'name' => $data['name'],
+                'brand' => $data['brand'],
+                'description' => $data['description'],
+                'price' => 99.00,
+                'stock' => 10,
+                'category_id' => $category->id,
+                'photo' => $data['photo'],
+            ]);
+        }
     }
     
 

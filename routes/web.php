@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Auth\LoginController;
 
 /*
@@ -20,6 +21,9 @@ use App\Http\Controllers\Auth\LoginController;
 // STRONA GŁÓWNA
 // ============================
 Route::get('/', [ProductController::class, 'index'])->name('home');
+
+// Strona szczegółów produktu - dostępna dla wszystkich
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 // ============================
 // AUTORYZACJA (Login / Register / Logout)
@@ -66,6 +70,9 @@ Route::middleware(['auth', 'role:Klient'])->group(function () {
 
     // Płatność (fake/demo)
     Route::post('/payments', [OrderController::class, 'pay'])->name('payments.pay');
+
+    // Dodaj recenzję
+    Route::post('/products/{product}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 });
 
 
@@ -84,10 +91,13 @@ Route::middleware(['auth', 'role:Administrator'])->group(function () {
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     // CRUD
-    Route::resource('products', ProductController::class);
+    Route::resource('products', ProductController::class)->except('show');
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
 
     // Wszystkie zamówienia
     Route::get('/orders/all', [OrderController::class, 'all'])->name('orders.all');
+
+    // Usuwanie recenzji
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });

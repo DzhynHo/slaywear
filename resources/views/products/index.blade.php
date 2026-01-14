@@ -1,7 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container" role="main">
+<div class="container">
+
+    {{-- Top carousel --}}
+    <div id="topCarousel" class="carousel slide top-carousel mb-4" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img 
+                    src="{{ asset('images/karusel/11.png') }}" 
+                    class="d-block w-100" 
+                    alt="Promocja 1"
+                    style="width:auto; max-width:100%; height:auto; display:block; margin:0 auto;"
+                >
+            </div>
+            <div class="carousel-item">
+                <img 
+                    src="{{ asset('images/karusel/12.png') }}" 
+                    class="d-block w-100" 
+                    alt="Promocja 2"
+                    style="width:auto; max-width:100%; height:auto; display:block; margin:0 auto;"
+                >
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#topCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Poprzedni</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#topCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Następny</span>
+        </button>
+    </div>
 
     <header class="mb-4">
         <h1>Nasze produkty</h1>
@@ -14,64 +44,48 @@
         </div>
     @endif
 
-    <section class="row" aria-label="Lista produktów">
+    <div class="products-grid">
         @foreach($products as $product)
-            <article class="col-md-4 mb-4">
-                <div class="card h-100" role="article" aria-labelledby="product-title-{{ $product->id }}">
-                    <div class="card-body d-flex flex-column">
+            <div class="product-item">
+                <article class="product-card" aria-labelledby="product-title-{{ $product->id }}">
+                    
+                    @if(!empty($product->photo))
+                        <img src="{{ asset('images/clothes/' . $product->photo) }}" alt="{{ $product->name }}">
+                    @endif
 
-                        <h2 id="product-title-{{ $product->id }}" class="h5">
-                            {{ $product->name }}
-                        </h2>
+                    <div class="product-info">
+                        <h2 id="product-title-{{ $product->id }}" class="h6">{{ $product->name }}</h2>
+                        <p class="text-muted small mb-1">{{ Str::limit($product->description, 80) }}</p>
+                        <p class="price mb-1">{{ $product->price }} zł</p>
 
-                        <p>
-                            <strong>Opis:</strong><br>
-                            {{ $product->description }}
-                        </p>
+                        <div class="d-flex flex-column gap-2">
+                            <a href="{{ route('products.show', $product) }}" class="btn btn-sm btn-info">
+                                Szczegóły
+                            </a>
 
-                        <p>
-                            <strong>Cena:</strong>
-                            {{ $product->price }} zł
-                        </p>
-
-                        <p>
-                            <strong>Dostępność:</strong>
-                            {{ $product->stock }} szt.
-                        </p>
-
-                        <!-- Formularz dodawania do koszyka -->
-                        <form method="POST" action="{{ route('orders.store') }}" aria-label="Dodaj produkt do koszyka">
-                            @csrf
-
-                            <!-- Ukryte pole z ID produktu -->
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-
-                            <div class="mb-2">
-                                <label for="quantity-{{ $product->id }}" class="form-label">
-                                    Ilość
-                                </label>
-
-                                <input
-                                    id="quantity-{{ $product->id }}"
-                                    type="number"
-                                    name="quantity"
-                                    min="1"
-                                    value="1"
-                                    class="form-control"
-                                    required
-                                    aria-required="true"
-                                >
-                            </div>
-
-                            <button type="submit" class="btn btn-primary mt-auto">
-                                Dodaj do koszyka
-                            </button>
-                        </form>
+                            <form method="POST" action="{{ route('orders.store') }}">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <label for="quantity-{{ $product->id }}" class="visually-hidden">Ilość</label>
+                                    <input 
+                                        id="quantity-{{ $product->id }}" 
+                                        name="quantity" 
+                                        type="number" 
+                                        value="1" 
+                                        min="1" 
+                                        class="form-control form-control-sm me-2" 
+                                        style="width:64px;"
+                                    >
+                                    <button type="submit" class="button-buy">Dodaj</button>
+                                </div>
+                            </form>
+                        </div>
 
                         @if(auth()->check() && auth()->user()->role && auth()->user()->role->name === 'Administrator')
-                            <div class="mt-2">
+                            <div class="mt-2 d-flex gap-2">
                                 <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-secondary">Edytuj</a>
-                                <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline-block">
+                                <form action="{{ route('products.destroy', $product) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger">Usuń</button>
@@ -80,10 +94,10 @@
                         @endif
 
                     </div>
-                </div>
-            </article>
+                </article>
+            </div>
         @endforeach
-    </section>
+    </div>
 
-</main>
+</div>
 @endsection

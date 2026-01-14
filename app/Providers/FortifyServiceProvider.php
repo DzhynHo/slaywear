@@ -10,6 +10,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Fortify\Contracts\RequestPasswordResetLinkViewResponse;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Actions\RedirectIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Fortify;
@@ -21,7 +22,15 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Bind Fortify view response contract for password reset link page
+        $this->app->singleton(RequestPasswordResetLinkViewResponse::class, function () {
+            return new class implements RequestPasswordResetLinkViewResponse {
+                public function toResponse($request)
+                {
+                    return response()->view('auth.forgot-password');
+                }
+            };
+        });
     }
 
     /**

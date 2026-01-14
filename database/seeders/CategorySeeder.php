@@ -12,5 +12,12 @@ class CategorySeeder extends Seeder
         Category::create(['name' => 'Koszulki']);
         Category::create(['name' => 'Bluzy']);
         Category::create(['name' => 'Spodnie']);
+        Category::create(['name' => 'Koszule']);
+        Category::create(['name' => 'Akcesoria']);
+        Category::create(['name' => 'Skarpety']);
+        Category::create(['name' => 'Płaszcze']);
+        Category::create(['name' => 'Dresy']);
+        Category::create(['name' => 'Sukienki']);
+        Category::create(['name' => 'Kamizelki']);
     }
 }

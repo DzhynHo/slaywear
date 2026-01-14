@@ -114,8 +114,10 @@ class OrderController extends Controller
     // Zarządzanie zamówieniami (dla pracownika)
     public function manage()
     {
+        // Pokażemy pracownikowi więcej statusów (pending, processing, paid),
+        // żeby mógł zobaczyć zamówienia klientów także po opłaceniu.
         $orders = Order::with('items.product', 'user')
-                       ->where('status', 'pending')
+                       ->whereIn('status', ['pending', 'processing', 'paid'])
                        ->orderBy('created_at', 'desc')
                        ->get();
 

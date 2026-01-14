@@ -37,7 +37,8 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        return view('products.show', compact('product'));
+        $reviews = $product->reviews()->with('user')->latest()->get();
+        return view('products.show', compact('product', 'reviews'));
     }
 
     public function edit(Product $product)

@@ -24,6 +24,17 @@ public function items()
     return $this->hasMany(OrderItem::class);
 }
 
+    public static function calculateTotalFromItems(array $items): float
+    {
+        $total = 0.0;
+        foreach ($items as $item) {
+            $qty = isset($item['quantity']) ? (float)$item['quantity'] : 0;
+            $price = isset($item['price']) ? (float)$item['price'] : 0.0;
+            $total += $qty * $price;
+        }
+        return round($total, 2);
+    }
+
 public function payment()
 {
     return $this->hasOne(Payment::class);

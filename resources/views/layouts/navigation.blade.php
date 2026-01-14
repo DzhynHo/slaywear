@@ -15,6 +15,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @if(Auth::check() && Auth::user()->role && (Auth::user()->role->name === 'Pracownik' || Auth::user()->role->name === 'Administrator'))
+                        <x-nav-link :href="route('orders.manage')" :active="request()->routeIs('orders.manage')">
+                            {{ __('Panel pracownika') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -70,6 +75,11 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @if(Auth::check() && Auth::user()->role && (Auth::user()->role->name === 'Pracownik' || Auth::user()->role->name === 'Administrator'))
+                <x-responsive-nav-link :href="route('orders.manage')" :active="request()->routeIs('orders.manage')">
+                    {{ __('Panel pracownika') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
