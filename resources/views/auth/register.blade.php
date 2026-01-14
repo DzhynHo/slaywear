@@ -9,7 +9,7 @@
                     <h1 class="h4 mb-3">Zarejestruj się</h1>
 
                     <form method="POST" action="{{ route('register') }}" aria-label="Formularz rejestracji">
-                        @csrf
+                        <x-csrf />
 
                         <div class="mb-3">
                             <label for="name" class="form-label">Imię i nazwisko</label>

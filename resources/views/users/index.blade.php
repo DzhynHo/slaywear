@@ -25,7 +25,7 @@
                         <a href="{{ route('users.edit', $user) }}" class="btn btn-sm btn-secondary">Edytuj</a>
 
                         <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline-block">
-                            @csrf
+                            <x-csrf />
                             @method('DELETE')
                             <button class="btn btn-sm btn-danger">Usuń</button>
                         </form>

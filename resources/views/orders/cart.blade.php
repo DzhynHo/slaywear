@@ -26,7 +26,7 @@
                         <td>{{ $item->quantity * $item->price }} zł</td>
                         <td>
                             <form action="{{ route('cart.remove', $item->product->id) }}" method="POST">
-                                @csrf
+                                <x-csrf />
                                 <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                             </form>
                         </td>
@@ -38,7 +38,7 @@
         <p><strong>Łączna kwota: </strong> {{ $order->items->sum(fn($i) => $i->quantity * $i->price) }} zł</p>
 
         <form action="{{ route('payments.pay') }}" method="POST">
-            @csrf
+            <x-csrf />
             <button type="submit" class="btn btn-success">Zapłać</button>
         </form>
     @endif

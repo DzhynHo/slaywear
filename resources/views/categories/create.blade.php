@@ -23,7 +23,7 @@
                 @endif
 
                 <form method="POST" action="{{ route('categories.store') }}" aria-labelledby="create-category-title">
-                    @csrf
+                    <x-csrf />
 
                     <div class="mb-3">
                         <label for="name" class="form-label">Nazwa kategorii</label>

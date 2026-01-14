@@ -21,7 +21,7 @@
                     <td>{{ $product['quantity'] }}</td>
                     <td>
                         <form action="{{ route('cart.remove', $id) }}" method="POST">
-                            @csrf
+                            <x-csrf />
                             <button type="submit" class="btn btn-danger btn-sm">Usuń</button>
                         </form>
                     </td>
@@ -31,7 +31,7 @@
     </table>
 
     <form action="{{ route('payments.pay') }}" method="POST">
-        @csrf
+        <x-csrf />
         <button type="submit" class="btn btn-success">
             Zapłać
         </button>

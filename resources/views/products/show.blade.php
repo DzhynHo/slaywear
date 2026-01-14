@@ -41,7 +41,7 @@
                         ✓ Dostępne ({{ $product->stock }} szt.)
                     </div>
                     <form method="POST" action="{{ route('orders.store') }}" class="mb-4">
-                        @csrf
+                        <x-csrf />
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <div class="d-flex align-items-center gap-2">
                             <input name="quantity" type="number" value="1" min="1" 
@@ -64,7 +64,7 @@
                     @if(auth()->check() && auth()->user()->hasRole('Administrator'))
                         <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-secondary">Edytuj</a>
                         <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline-block">
-                            @csrf
+                            <x-csrf />
                             @method('DELETE')
                             <button class="btn btn-sm btn-danger" onclick="return confirm('Na pewno?')">Usuń</button>
                         </form>
@@ -85,7 +85,7 @@
                     <div class="add-review-box mb-4 p-4 rounded-3" style="background-color: #ffffff; border: 2px solid #b71c1c;">
                         <h5 class="mb-3">Dodaj swoją opinię</h5>
                         <form method="POST" action="{{ route('reviews.store', $product) }}">
-                            @csrf
+                            <x-csrf />
                             
                             <div class="mb-3">
                                 <label for="rating" class="form-label">Ocena *</label>
@@ -135,7 +135,7 @@
                                     {{-- Usuwanie recenzji (Admin) --}}
                                     @if(auth()->check() && (auth()->user()->hasRole('Administrator') || auth()->id() === $review->user_id))
                                         <form action="{{ route('reviews.destroy', $review) }}" method="POST" style="display:inline-block">
-                                            @csrf
+                                            <x-csrf />
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Usunąć recenzję?')">🗑️</button>
                                         </form>

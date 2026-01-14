@@ -5,7 +5,7 @@
     <h1>Edytuj produkt</h1>
 
     <form action="{{ route('products.update', $product) }}" method="POST">
-        @csrf
+        <x-csrf />
         @method('PATCH')
 
         <div class="mb-3">
@@ -41,7 +41,7 @@
     </form>
 
     <form action="{{ route('products.destroy', $product) }}" method="POST" class="mt-3">
-        @csrf
+        <x-csrf />
         @method('DELETE')
         <button class="btn btn-danger">Usuń produkt</button>
     </form>

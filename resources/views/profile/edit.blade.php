@@ -4,7 +4,7 @@
 <h1>Twój profil</h1>
 
 <form method="POST" action="{{ route('profile.update') }}">
-    @csrf
+    <x-csrf />
     @method('PATCH')
 
     <label>Imię i nazwisko:</label>

@@ -64,7 +64,7 @@
                             </a>
 
                             <form method="POST" action="{{ route('orders.store') }}">
-                                @csrf
+                                <x-csrf />
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <div class="d-flex align-items-center justify-content-center">
                                     <label for="quantity-{{ $product->id }}" class="visually-hidden">Ilość</label>
@@ -86,7 +86,7 @@
                             <div class="mt-2 d-flex gap-2">
                                 <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-secondary">Edytuj</a>
                                 <form action="{{ route('products.destroy', $product) }}" method="POST">
-                                    @csrf
+                                    <x-csrf />
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger">Usuń</button>
                                 </form>

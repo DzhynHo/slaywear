@@ -14,7 +14,7 @@
 
                 @auth
                     <form method="POST" action="{{ route('orders.store') }}">
-                        @csrf
+                        <x-csrf />
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <label for="qty-{{ $product->id }}" class="form-label">Ilość</label>
                         <input id="qty-{{ $product->id }}" type="number" name="quantity" min="1" class="form-control mb-2" required>

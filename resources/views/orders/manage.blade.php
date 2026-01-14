@@ -29,7 +29,7 @@
                     <td>{{ $order->status }}</td>
                     <td>
                         <form action="{{ route('orders.update', $order) }}" method="POST">
-                            @csrf
+                            <x-csrf />
                             @method('PATCH')
 
                             <select name="status" class="form-select mb-2">

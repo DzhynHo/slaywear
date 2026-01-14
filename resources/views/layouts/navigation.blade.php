@@ -45,7 +45,7 @@
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+                            <x-csrf />
 
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
@@ -96,7 +96,7 @@
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
-                    @csrf
+                    <x-csrf />
 
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();

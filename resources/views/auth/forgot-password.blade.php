@@ -15,7 +15,7 @@
                     @endif
 
                     <form method="POST" action="{{ route('password.email') }}" aria-label="Formularz resetowania hasła">
-                        @csrf
+                        <x-csrf />
 
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>

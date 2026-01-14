@@ -23,7 +23,7 @@
                         <a href="{{ route('categories.edit', $category) }}" class="btn btn-sm btn-secondary">Edytuj</a>
 
                         <form action="{{ route('categories.destroy', $category) }}" method="POST" style="display:inline-block">
-                            @csrf
+                            <x-csrf />
                             @method('DELETE')
                             <button class="btn btn-sm btn-danger">Usuń</button>
                         </form>

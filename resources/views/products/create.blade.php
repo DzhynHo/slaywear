@@ -5,7 +5,7 @@
     <h1>Dodaj produkt</h1>
 
     <form action="{{ route('products.store') }}" method="POST">
-        @csrf
+        <x-csrf />
 
         <div class="mb-3">
             <label class="form-label">Nazwa</label>
