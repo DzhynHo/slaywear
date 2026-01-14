@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container">
+<div class="container">
     <h1>Dodaj produkt</h1>
 
     <form action="{{ route('products.store') }}" method="POST">
@@ -38,5 +38,5 @@
 
         <button class="btn btn-primary">Zapisz</button>
     </form>
-</main>
+</div>
 @endsection

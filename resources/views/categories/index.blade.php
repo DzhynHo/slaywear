@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container">
+<div class="container">
     <h1>Kategorie</h1>
 
     <a href="{{ route('categories.create') }}" class="btn btn-primary mb-3">Dodaj kategorię</a>
@@ -32,5 +32,5 @@
             @endforeach
         </tbody>
     </table>
-</main>
+</div>
 @endsection

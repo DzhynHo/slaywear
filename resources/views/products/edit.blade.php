@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container">
+<div class="container">
     <h1>Edytuj produkt</h1>
 
     <form action="{{ route('products.update', $product) }}" method="POST">
@@ -45,5 +45,5 @@
         @method('DELETE')
         <button class="btn btn-danger">Usuń produkt</button>
     </form>
-</main>
+</div>
 @endsection

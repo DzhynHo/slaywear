@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container" role="main">
+<div class="container" role="main">
     <div class="admin-panel">
         <div class="row">
             <aside class="col-md-3 admin-sidebar" aria-hidden="true">
@@ -38,5 +38,5 @@
             </section>
         </div>
     </div>
-</main>
+</div>
 @endsection

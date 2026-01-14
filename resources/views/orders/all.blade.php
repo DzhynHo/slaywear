@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container">
+<div class="container">
     <h1>Wszystkie zamówienia</h1>
 
     <table class="table table-bordered">
@@ -26,5 +26,5 @@
             @endforeach
         </tbody>
     </table>
-</main>
+</div>
 @endsection

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container">
+<div class="container">
     <h1>Użytkownicy</h1>
 
     <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Dodaj użytkownika</a>
@@ -34,5 +34,5 @@
             @endforeach
         </tbody>
     </table>
-</main>
+</div>
 @endsection

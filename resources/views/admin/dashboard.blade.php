@@ -17,12 +17,12 @@
                 </nav>
             </aside>
 
-            <main class="col-md-9 admin-main">
+            <div class="col-md-9 admin-main">
                 <section>
                     <h3>Zarządzanie</h3>
                     <p>Wybierz pozycję z lewego menu, aby zarządzać zasobami sklepu.</p>
                 </section>
-            </main>
+            </div>
         </div>
     </div>
 @endsection

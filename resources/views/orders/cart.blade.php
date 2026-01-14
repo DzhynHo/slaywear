@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container">
+<div class="container">
     <h1>Twój koszyk</h1>
 
     @if(!$order || $order->items->isEmpty())
@@ -42,5 +42,5 @@
             <button type="submit" class="btn btn-success">Zapłać</button>
         </form>
     @endif
-</main>
+</div>
 @endsection

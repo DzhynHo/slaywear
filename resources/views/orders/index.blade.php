@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container">
+<div class="container">
     <h1>Moje zamówienia</h1>
 
     @if($orders->isEmpty())
@@ -36,5 +36,5 @@
             </tbody>
         </table>
     @endif
-</main>
+</div>
 @endsection

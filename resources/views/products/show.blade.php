@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container" role="main">
+<div class="container" role="main">
     <div class="row mt-4">
         <div class="col-lg-6">
             {{-- Zdjęcie produktu --}}
@@ -154,7 +154,7 @@
         </div>
     </div>
 
-</main>
+</div>
 
 <style>
     .product-details-box {
